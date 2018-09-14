@@ -15,6 +15,8 @@ Apache Maven Tool
 
 Junit framework was used to write unit tests, it uses HSQLDB in-memory database and test each htttp verb and their functionality.
 
+We can run mvn test to run the tests.
+
 Navigate to target folder and run the project: 
 
 java -jar assignment-demo-0.0.1-SNAPSHOT.jar
