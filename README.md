@@ -27,7 +27,7 @@ The project uses HSQLDB, the data are persistent on disk storage, in the same di
 
 The controller convert the data to/from json format.
 
-Now the project is running, we can test is with curl.
+Now the project is running, we can test it with curl.
 
 
 # Reading
