@@ -33,8 +33,11 @@ Now the project is running, we can test it with curl.
 # Reading
 
 To read all notes: curl -X GET http://localhost:8080/note .
+
 To read all history of all notes: curl -X GET http://localhost:8080/history .
+
 To read particular note: curl -X GET http://localhost:8080/note/{noteTitle} , noteTitle variable is the title of the note.
+
 To read particular note history: curl -X GET http://localhost:8080/history/{noteTitle} .
 
 # Creating
@@ -42,7 +45,9 @@ To read particular note history: curl -X GET http://localhost:8080/history/{note
 To create a note: curl -d '{"title":"Hello", "content":"Good Evening"}' -H "Content-Type: application/json" -X POST http://localhost:8080/note .
 
 This will create note with "Hello" title and "Good Evening" content.
+
 The created, modified date and version number will be created automatically.
+
 If the either of the fields is not filled, the service will return http 400 error code.
 
 # Updating
