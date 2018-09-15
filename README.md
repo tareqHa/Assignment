@@ -10,7 +10,7 @@ Apache Maven Tool
 1- clone the project from repository: git clone https://github.com/tareqHa/Assignment.git
 
 2- navigate to the local directory and execute the commands:
-  * mvn compile: if it gives error, ignore it.
+  * mvn compile.
   * mvn package: this will compile the code, run the tests and package the code up in a JAR file in target directory.
 
 Junit framework was used to write unit tests, it uses HSQLDB in-memory database and test each htttp verb and their functionality.
