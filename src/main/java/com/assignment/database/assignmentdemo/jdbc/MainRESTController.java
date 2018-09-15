@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.coyote.Response;
-import org.hsqldb.cmdline.SqlToolError;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +32,7 @@ public class MainRESTController {
 			method = RequestMethod.GET,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public List<Note> getNotes() throws SqlToolError, IOException, SQLException{
+	public List<Note> getNotes(){
 		return noteJdbcDao.findAll();
 	}
 	
@@ -40,7 +40,7 @@ public class MainRESTController {
 			method = RequestMethod.GET,
 			produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public List<History> getAllHistory() throws SqlToolError, IOException, SQLException{
+	public List<History> getAllHistory(){
 		return noteJdbcDao.getAllHistory();
 	}
 	
@@ -48,7 +48,7 @@ public class MainRESTController {
 			method=RequestMethod.GET,
 			produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public ResponseEntity<Note> getNote(@PathVariable("noteTitle") String noteTitle) throws SqlToolError, IOException, SQLException {
+	public ResponseEntity<Note> getNote(@PathVariable("noteTitle") String noteTitle) {
 		System.out.println("noteTitle = " + noteTitle);
 		return new ResponseEntity<>(noteJdbcDao.getNote(noteTitle), HttpStatus.OK);
 	}
@@ -57,7 +57,7 @@ public class MainRESTController {
 			method=RequestMethod.GET,
 			produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public ResponseEntity<List<History>> getHistory(@PathVariable("historyNote") String historyNote) throws SqlToolError, IOException, SQLException {
+	public ResponseEntity<List<History>> getHistory(@PathVariable("historyNote") String historyNote) {
 		return new ResponseEntity<>(noteJdbcDao.getHistory(historyNote), HttpStatus.OK);
 	}
 	
@@ -66,7 +66,7 @@ public class MainRESTController {
 			method=RequestMethod.POST,
 			produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public ResponseEntity<List<Note>> addNote(@RequestBody Note note) throws SqlToolError, IOException, SQLException {
+	public ResponseEntity<List<Note>> addNote(@RequestBody Note note) {
 		
 		// check if title and content are filled
 		if (note.getTitle().isEmpty() || note.getContent().isEmpty())
@@ -80,7 +80,7 @@ public class MainRESTController {
 			method=RequestMethod.PUT,
 			produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public void updateNote(@RequestBody Note note) throws SqlToolError, IOException, SQLException {
+	public void updateNote(@RequestBody Note note) {
 		noteJdbcDao.updateNote(note);
 	}
 	
@@ -88,7 +88,7 @@ public class MainRESTController {
 			method=RequestMethod.DELETE,
 			produces= {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody
-	public ResponseEntity<List<Note>> deleteNote(@RequestBody Note note) throws SqlToolError, IOException, SQLException {
+	public ResponseEntity<List<Note>> deleteNote(@RequestBody Note note) {
 		noteJdbcDao.deleteNote(note.getTitle());
 		return new ResponseEntity<>(noteJdbcDao.findAll(), HttpStatus.OK);
 	}

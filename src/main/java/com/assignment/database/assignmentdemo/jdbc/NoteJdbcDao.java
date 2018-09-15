@@ -10,9 +10,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import org.hsqldb.cmdline.SqlFile;
-import org.hsqldb.cmdline.SqlToolError;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,40 +33,53 @@ public class NoteJdbcDao  {
 
 	/**
 	 * execute the sql file that creates the note and history databases
-	 * @throws IOException
-	 * @throws SqlToolError
-	 * @throws SQLException
 	 */
-	public void setUp() throws IOException, SqlToolError, SQLException {
+	public void setUp(){
 		String sql = "SELECT COUNT(*) from INFORMATION_SCHEMA.SYSTEM_TABLES Where TABLE_NAME = 'NOTEE'";
 		int cnt = (int) jdbcTemplate.queryForObject(sql, Integer.class);
 		if (cnt == 0) {	// if the table is not created, then create it
-			try(InputStream inputStream = getClass().getResourceAsStream("/setUp.sql")) {
-			    SqlFile sqlFile = new SqlFile(new InputStreamReader(inputStream), "init", System.out, "UTF-8", false, new File("."));
-			    Connection connection = DriverManager.getConnection("jdbc:hsqldb:file:testdb");
-			    sqlFile.setConnection(connection);
-			    sqlFile.execute();
-			}
+			sql = "create table NOTEE \r\n" + 
+					"(  \r\n" + 
+					"title varchar(50) not null, \r\n" + 
+					"content varchar(255) not null, \r\n" + 
+					"created timestamp default CURRENT_TIMESTAMP,\r\n" + 
+					"modified timestamp default CURRENT_TIMESTAMP,\r\n" + 
+					"version integer, \r\n" + 
+					"primary key(title)\r\n" + 
+					"); ";
+			jdbcTemplate.update(sql);
+			sql = "create table HISTORY \r\n" + 
+					"( \r\n" + 
+					"id integer not null IDENTITY,\r\n" + 
+					"title varchar(50) not null,\r\n" + 
+					"content varchar(255) not null, \r\n" + 
+					"created timestamp default CURRENT_TIMESTAMP,\r\n" + 
+					"modified timestamp default CURRENT_TIMESTAMP,\r\n" + 
+					"version integer,\r\n" + 
+					"change varchar(50) not null,\r\n" + 
+					"primary key(id)\r\n" + 
+					");";
+			jdbcTemplate.update(sql);
 		}
 	}
 	 
-	public List<Note> findAll() throws SqlToolError, IOException, SQLException{
+	public List<Note> findAll(){
 		setUp();
 		return jdbcTemplate.query("select * from NOTEE", new BeanPropertyRowMapper<Note>(Note.class));
 	}
 
 	
-	public List<History> getAllHistory() throws SqlToolError, IOException, SQLException{
+	public List<History> getAllHistory(){
 		setUp();
 		return jdbcTemplate.query("SELECT * from HISTORY", new HistoryRowMapper());
 	}
 	
-	public List<History> getHistory(String title) throws SqlToolError, IOException, SQLException {
+	public List<History> getHistory(String title) {
 		setUp();
 		return jdbcTemplate.query("SELECT * from HISTORY WHERE title = '" + title + "'", new HistoryRowMapper());
 	}
 	 
-	public Note getNote(String title) throws SqlToolError, IOException, SQLException {
+	public Note getNote(String title) {
 		// TODO Auto-generated method stub
 		setUp();
 		String sql = "select COUNT(*) from NOTEE where title = '" + title + "'";
@@ -78,7 +89,7 @@ public class NoteJdbcDao  {
 		return null;
 	}
 
-	public void addNote(Note note) throws SqlToolError, IOException, SQLException {
+	public void addNote(Note note) {
 		setUp();
 		String sql = "SELECT COUNT(*) from NOTEE WHERE title = '" + note.getTitle() + "'";
 		int cnt = (int) jdbcTemplate.queryForObject(sql, Integer.class);
@@ -90,7 +101,7 @@ public class NoteJdbcDao  {
 		}
 	}
 
-	public void updateNote(Note note) throws SqlToolError, IOException, SQLException {
+	public void updateNote(Note note) {
 		setUp();
 		String sql = "SELECT * from NOTEE WHERE title = '" + note.getTitle() + "'";
 		Note noteStored = (Note) jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<Note>(Note.class));
@@ -101,7 +112,7 @@ public class NoteJdbcDao  {
 	}
 
 
-	public void deleteNote(String noteTitle) throws SqlToolError, IOException, SQLException {
+	public void deleteNote(String noteTitle) {
 		setUp();
 		Note note = (Note) jdbcTemplate.queryForObject("SELECT * FROM NOTEE WHERE title = '" + noteTitle + "'", new BeanPropertyRowMapper<Note>(Note.class));
 		String sql = "INSERT INTO HISTORY (title, content, created, version, change) VALUES(?, ?, ?, ?, ?)";

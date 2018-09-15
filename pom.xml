@@ -81,14 +81,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-				<!-- https://mvnrepository.com/artifact/org.hsqldb/sqltool -->
-		<!-- https://mvnrepository.com/artifact/org.hsqldb/sqltool -->
-		<dependency>
-		    <groupId>org.hsqldb</groupId>
-		    <artifactId>sqltool</artifactId>
-		    <version>2.4.1</version>
-		    <scope> runtime</scope>
-		</dependency>
+			
 		
 		
 	</dependencies>

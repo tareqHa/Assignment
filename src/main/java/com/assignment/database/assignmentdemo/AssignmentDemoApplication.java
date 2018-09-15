@@ -16,8 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.catalina.core.ApplicationContext;
-import org.hsqldb.cmdline.SqlFile;
-import org.hsqldb.cmdline.SqlToolError;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -35,7 +34,7 @@ import com.assignment.database.assignmentdemo.jdbc.NoteJdbcDao;
 public class AssignmentDemoApplication {
 
 
-	public static void main(String[] args) throws SQLException, SqlToolError, IOException {
+	public static void main(String[] args){
 		 SpringApplication.run(AssignmentDemoApplication.class, args);
 		 
 	} 
